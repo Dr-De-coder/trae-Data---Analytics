@@ -179,24 +179,9 @@ async function initializeDatabase({ forceRebuild = false } = {}) {
   if (!initializationPromise || forceRebuild) {
     initializationPromise = (async () => {
       const SQL = await initSqlJs();
-
-      if (forceRebuild && fs.existsSync(dbPath)) {
-        fs.unlinkSync(dbPath);
-      }
-
-      if (fs.existsSync(dbPath)) {
-        const fileBuffer = fs.readFileSync(dbPath);
-        db = new SQL.Database(fileBuffer);
-      } else {
-        db = new SQL.Database();
-      }
-
-      if (forceRebuild || getTableCount(db) === 0) {
-        importCsvDataset(db);
-        persistDatabase(db);
-      }
-
-      console.log(`Connected to SQLite database at ${dbPath}`);
+      db = new SQL.Database();
+      importCsvDataset(db);
+      console.log('Database initialized from CSV files');
       return db;
     })();
   }
