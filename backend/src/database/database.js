@@ -178,7 +178,9 @@ async function initializeDatabase({ forceRebuild = false } = {}) {
 
   if (!initializationPromise || forceRebuild) {
     initializationPromise = (async () => {
-      const SQL = await initSqlJs();
+      const SQL = await initSqlJs({
+        locateFile: file => path.join(__dirname, file)
+      });
       const shouldPersistToDisk = !process.env.VERCEL;
 
       if (shouldPersistToDisk && forceRebuild && fs.existsSync(dbPath)) {
