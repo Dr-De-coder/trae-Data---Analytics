@@ -10,5 +10,13 @@
       "routePrefix": "/_/backend",
       "entrypoint": "src/server.js"
     }
+  },
+  "functions": {
+    "backend/src/server.js": {
+      "includeFiles": [
+        "**/node_modules/sql.js/dist/sql-wasm.wasm",
+        "**/csv/**/*.csv"
+      ]
+    }
   }
 }
