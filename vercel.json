@@ -14,8 +14,8 @@
   "functions": {
     "backend/src/server.js": {
       "includeFiles": [
-        "**/node_modules/sql.js/dist/sql-wasm.wasm",
-        "**/csv/**/*.csv"
+        "**/database/sql-wasm.wasm",
+        "**/database/csv/**/*.csv"
       ]
     }
   }

@@ -6,6 +6,10 @@ import initSqlJs from 'sql.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Vercel NFT trace hints
+path.join(__dirname, 'sql-wasm.wasm');
+path.join(__dirname, 'csv');
+
 const dbPath = path.join(__dirname, 'nf_buildathon.db');
 const csvDirectoryPath = path.join(__dirname, 'csv');
 
