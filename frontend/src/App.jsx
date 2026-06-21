@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react'
 import axios from 'axios'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-const apiUrl = '/_/backend/api/query'
+const apiUrl = import.meta.env.DEV
+  ? 'http://localhost:5001/api/query'
+  : '/_/backend/api/query'
 const exampleQuestions = [
   'show all users from Delhi',
   'show all plans with price greater than 1000',

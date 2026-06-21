@@ -179,9 +179,32 @@ async function initializeDatabase({ forceRebuild = false } = {}) {
   if (!initializationPromise || forceRebuild) {
     initializationPromise = (async () => {
       const SQL = await initSqlJs();
-      db = new SQL.Database();
-      importCsvDataset(db);
-      console.log('Database initialized from CSV files');
+      const shouldPersistToDisk = !process.env.VERCEL;
+
+      if (shouldPersistToDisk && forceRebuild && fs.existsSync(dbPath)) {
+        fs.unlinkSync(dbPath);
+      }
+
+      if (shouldPersistToDisk && !forceRebuild && fs.existsSync(dbPath)) {
+        const fileBuffer = fs.readFileSync(dbPath);
+        db = new SQL.Database(fileBuffer);
+      } else {
+        db = new SQL.Database();
+      }
+
+      if (forceRebuild || getTableCount(db) === 0) {
+        importCsvDataset(db);
+
+        if (shouldPersistToDisk) {
+          persistDatabase(db);
+          console.log(`Database initialized from CSV files and saved to ${dbPath}`);
+        } else {
+          console.log('Database initialized from CSV files');
+        }
+      } else {
+        console.log(`Connected to SQLite database at ${dbPath}`);
+      }
+
       return db;
     })();
   }
